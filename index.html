@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ManePS - Growtopia Private Server</title>
+    <style>
+        :root {
+            --primary: #4ecdc4;
+            --secondary: #ff6b6b;
+            --dark: #1a1a2e;
+            --card-bg: rgba(255, 255, 255, 0.07);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: white;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+        /* Animated Background */
+        .stars {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
+            background: radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+                        radial-gradient(2px 2px at 150px 150px, #fff, rgba(0,0,0,0));
+            background-size: 200px 200px;
+            animation: moveStars 100s linear infinite;
+        }
+        @keyframes moveStars { from { transform: translateY(0); } to { transform: translateY(-1000px); } }
+
+        /* Header */
+        header {
+            padding: 30px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .logo { 
+            font-size: 2rem; 
+            font-weight: 800; 
+            background: linear-gradient(to right, var(--secondary), var(--primary)); 
+            background-clip: text; 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+
+        /* Hero Section */
+        .hero { text-align: center; padding: 80px 0 40px; }
+        .hero h1 { font-size: 4rem; margin-bottom: 10px; text-shadow: 0 0 20px rgba(78,205,196,0.4); }
+        .hero p { font-size: 1.2rem; opacity: 0.8; }
+
+        .online-status {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: rgba(0,0,0,0.3); padding: 8px 25px; border-radius: 50px;
+            border: 1px solid var(--primary); margin-top: 20px;
+            cursor: pointer; transition: 0.3s;
+        }
+        .online-status:hover { background: rgba(78, 205, 196, 0.2); transform: scale(1.05); }
+        
+        .dot { 
+            width: 10px; height: 10px; background: var(--primary); border-radius: 50%; 
+            box-shadow: 0 0 10px var(--primary); animation: pulse 2s infinite; 
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        .last-updated { font-size: 0.8rem; opacity: 0.6; margin-top: 8px; }
+
+        /* Join Tabs */
+        .join-section { margin-top: 60px; background: var(--card-bg); border-radius: 20px; padding: 40px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .tab-buttons { display: flex; gap: 10px; margin-bottom: 30px; justify-content: center; flex-wrap: wrap; }
+        .tab-btn {
+            background: rgba(255,255,255,0.1); border: none; padding: 12px 30px;
+            color: white; border-radius: 10px; cursor: pointer; font-weight: 600;
+            transition: 0.3s;
+        }
+        .tab-btn.active { background: var(--primary); color: #1a1a2e; transform: translateY(-2px); }
+
+        .tab-content { display: none; text-align: left; animation: fadeIn 0.4s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .step-list { list-style: none; }
+        .step-list li { margin-bottom: 15px; padding-left: 35px; position: relative; }
+        .step-list li::before {
+            content: attr(data-step); position: absolute; left: 0; top: 0;
+            width: 25px; height: 25px; background: var(--secondary);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .host-box {
+            background: #000; padding: 20px; border-radius: 10px; margin: 20px 0;
+            font-family: monospace; border-left: 4px solid var(--primary); position: relative;
+        }
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: var(--primary);
+            border: none; padding: 5px 12px; border-radius: 5px; cursor: pointer; font-size: 0.8rem;
+            color: #1a1a2e; font-weight: bold;
+        }
+
+        .discord-btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: #5865F2; color: white; padding: 18px 40px;
+            border-radius: 15px; text-decoration: none; font-weight: bold;
+            margin-top: 20px; transition: 0.3s;
+        }
+        .discord-btn:hover { background: #4752C4; transform: scale(1.05); }
+
+        footer { padding: 60px 0; text-align: center; opacity: 0.6; font-size: 0.9rem; }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 2.5rem; }
+            .tab-buttons { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    
+    <div class="container">
+        <header>
+            <div class="logo">ManePS</div>
+            <a href="https://discord.gg/maneps" style="color:white; text-decoration:none;">Discord</a>
+        </header>
+
+        <section class="hero">
+            <h1>ManePS Growtopia</h1>
+            <p>Experience Growtopia like never before. Active community and zero lag.</p>
+            
+            <div class="online-status" id="refresh-btn">
+                <span class="dot"></span>
+                <span id="player-count">Connecting...</span>
+            </div>
+            <div class="last-updated" id="last-updated">Waiting for server sync...</div>
+        </section>
+
+        <section class="join-section">
+            <h2 style="text-align: center; margin-bottom: 30px;">Choose Your Platform</h2>
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="openTab(event, 'android')">📱 Android</button>
+                <button class="tab-btn" onclick="openTab(event, 'ios')">🍎 iOS</button>
+                <button class="tab-btn" onclick="openTab(event, 'windows')">💻 Windows</button>
+            </div>
+
+            <div id="android" class="tab-content active">
+                <ul class="step-list">
+                    <li data-step="1">Download <b>PowerTunnel</b>.</li>
+                    <li data-step="2">Open and click the <b>PowerTunnel</b> button.</li>
+                    <li data-step="3">The host URL is copied automatically. Go to <b>Host Settings</b>.</li>
+                    <li data-step="4">Paste the link and set to <b>"On Start"</b>.</li>
+                </ul>
+            </div>
+
+            <div id="ios" class="tab-content">
+                <ul class="step-list">
+                    <li data-step="1">Install <b>Surge 5</b> from the App Store.</li>
+                    <li data-step="2">Import the config URL from Discord.</li>
+                    <li data-step="3">Allow VPN and Connect!</li>
+                </ul>
+            </div>
+
+            <div id="windows" class="tab-content">
+                <ul class="step-list">
+                    <li data-step="1">Navigate to <code>etc/hosts</code>.</li>
+                    <li data-step="2">Open with Notepad as Admin.</li>
+                    <li data-step="3">Paste the lines and save:</li>
+                </ul>
+                <div class="host-box">
+                    <button class="copy-btn" onclick="copyHosts()">📋 Copy</button>
+                    <pre id="host-text">
+91.134.85.13 growtopia1.com
+91.134.85.13 growtopia2.com
+91.134.85.13 www.growtopia1.com
+91.134.85.13 www.growtopia2.com</pre>
+                </div>
+            </div>
+        </section>
+
+        <div style="text-align: center;">
+            <a href="https://discord.gg/maneps" class="discord-btn" target="_blank">Join Discord Community</a>
+        </div>
+
+        <footer>
+            <p>© 2026 ManePS Growtopia Server. Created by skyemane.</p>
+        </footer>
+    </div>
+
+    <script>
+        // CONFIG: The path to the JSON file generated by your PHP script
+        const DATA_SOURCE = 'online_players.json';
+
+        function openTab(evt, platform) {
+            let i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) tabcontent[i].style.display = "none";
+            tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) tablinks[i].className = tablinks[i].className.replace(" active", "");
+            document.getElementById(platform).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        function copyHosts() {
+            const text = document.getElementById('host-text').innerText;
+            navigator.clipboard.writeText(text).then(() => alert("Copied!"));
+        }
+
+        async function fetchOnlinePlayers() {
+            const playerCountElement = document.getElementById('player-count');
+            const lastUpdatedElement = document.getElementById('last-updated');
+            
+            try {
+                // Fetch the JSON file that your Lua script updates via PHP
+                const response = await fetch(DATA_SOURCE + '?t=' + new Date().getTime()); // cache buster
+                if (!response.ok) throw new Error('File not found');
+                
+                const data = await response.json();
+                
+                if (data.online !== undefined) {
+                    playerCountElement.textContent = `${data.online} Players Online`;
+                    playerCountElement.style.color = '#4ecdc4';
+                    
+                    // Format the timestamp
+                    const date = new Date(data.last_update * 1000);
+                    lastUpdatedElement.textContent = `Last sync with server: ${date.toLocaleTimeString()}`;
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                playerCountElement.textContent = "Server Online";
+                lastUpdatedElement.textContent = "Updating server data...";
+            }
+        }
+
+        // Run immediately
+        fetchOnlinePlayers();
+        // Check for updates every 30 seconds
+        setInterval(fetchOnlinePlayers, 30000);
+        
+        // Manual refresh trigger
+        document.getElementById('refresh-btn').onclick = fetchOnlinePlayers;
+    </script>
+</body>
+</html>
